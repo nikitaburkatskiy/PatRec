@@ -1,0 +1,48 @@
+import numpy as np
+import cv2 as cv
+
+def lab1():
+
+    cap = cv.VideoCapture(0)
+    if not cap.isOpened():
+        print("Error: camera")
+
+    # Create a video capture objects and set some parameters
+    fps = 30.0
+    capsize = (800, 600)
+
+    # Create VideoWriter Object and define the codec
+    fourcc = cv.VideoWriter_fourcc('X', 'V', 'I', 'D')
+    out = cv.VideoWriter('output.avi', fourcc, fps, capsize, True)
+
+    while cap.isOpened():
+
+        # Change a background color
+        ret, frame = cap.read()
+        gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
+        back2rgb = cv.cvtColor(gray, cv.COLOR_GRAY2RGB)
+
+        # Draw line
+        start_point = (8, 6)
+        end_point = (80, 60)
+        color = (55, 155, 255)
+        thickness = 3
+        back2rgb = cv.line(img=back2rgb, pt1=start_point, pt2=end_point, color=color, thickness=thickness, lineType=8, shift=0)
+
+        # Draw rectangle
+        x1, y1 = 355, 455
+        x2, y2 = 555, 655
+        back2rgb = cv.rectangle(back2rgb, (x1, y1), (x2, y2), (255, 155, 55), 5)
+
+        cv.imshow('webcam', back2rgb)
+
+        out.write(back2rgb)
+        if cv.waitKey(1) == ord('q'):
+            break
+
+    cap.release()
+    out.release()
+    cv.destroyAllWindows()
+
+if __name__ == '__main__':
+    lab1()
